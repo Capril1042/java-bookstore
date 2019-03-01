@@ -1,8 +1,11 @@
 package com.cjs.bookstore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -15,10 +18,9 @@ public class Section
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "sectionid")
-    @JsonIgnore
-    private Book book;
+    @OneToMany(mappedBy = "section")
+    @JsonIgnoreProperties("section")
+    private Set<Book> books = new HashSet<>();
 
     public Section()
     {
@@ -44,13 +46,13 @@ public class Section
         this.name = name;
     }
 
-    public Book getBook()
+    public Set<Book> getBooks()
     {
-        return book;
+        return books;
     }
 
-    public void setBook(Book book)
+    public void setBooks(Set<Book> books)
     {
-        this.book = book;
+        this.books = books;
     }
 }

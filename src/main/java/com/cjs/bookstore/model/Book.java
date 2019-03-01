@@ -1,5 +1,6 @@
 package com.cjs.bookstore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -20,8 +21,10 @@ public class Book
 
     private int copy;
 
-    @OneToMany(mappedBy = "book" )
-    private long sectionid;
+    @ManyToOne
+    @JoinColumn(name = "section")
+    @JsonIgnoreProperties("books")
+    private Section section;
 
     @ManyToMany(mappedBy = "books")
     @JsonIgnoreProperties("books")
@@ -71,19 +74,20 @@ public class Book
         this.copy = copy;
     }
 
-    public long getSectionid()
-    {
-        return sectionid;
-    }
-
-    public void setSectionid(long sectionid)
-    {
-        this.sectionid = sectionid;
-    }
 
     public Set<Authors> getAuthors()
     {
         return authors;
+    }
+
+    public Section getSection()
+    {
+        return section;
+    }
+
+    public void setSection(Section section)
+    {
+        this.section = section;
     }
 
     public void setAuthors(Set<Authors> authors)
